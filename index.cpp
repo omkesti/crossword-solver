@@ -2,6 +2,9 @@
 #include<vector>
 #include<string>
 #include<math.h>
+#include<vector>
+
+using namespace std;
 
 char grid[10][10] = {
   {'A', 'C', 'E', 'D', 'V', 'L', 'X', 'O', 'I', 'L'},
@@ -24,7 +27,13 @@ vector<vector<int>> found_indices;
 
 bool is_match = false;
 
-using namespace std;
+void check_match(const vector<int>& c_idx);
+void full_word_check(
+    const int flag_dir, 
+    const int flag_word, 
+    const vector<int> c_idx
+);
+vector<int> add_cord(const vector<int>& cord, const vector<int>& dir);
 
 int main() {
     int f_idx = 0;
@@ -44,10 +53,10 @@ int main() {
 }
 
 // Checks for the first letter match
-vector<int> check_match(const vector<int>& c_idx)
+void check_match(const vector<int>& c_idx)
 {
-    unsigned int flag_dir = INT16_MAX;
-    unsigned int flag_word = INT16_MAX;
+    unsigned int flag_dir = 10;
+    unsigned int flag_word = 10;
 
     for (int f_idx = 0; f_idx < words.size(); f_idx++)
     {
@@ -62,8 +71,8 @@ vector<int> check_match(const vector<int>& c_idx)
             {
                 flag_dir = d_idx;
                 flag_word = f_idx;
-                const bool found = full_word_check(flag_dir, flag_word, c_idx);
-                
+                full_word_check(flag_dir, flag_word, c_idx);
+                return;
             }
         }
     }
@@ -71,7 +80,7 @@ vector<int> check_match(const vector<int>& c_idx)
 
 
 // Full word is checked in this function
-bool full_word_check(
+void full_word_check(
     const int flag_dir, 
     const int flag_word, 
     const vector<int> c_idx)
@@ -87,11 +96,12 @@ bool full_word_check(
             count++;
             if (count == word.size())
                 found_indices.push_back(c_idx);
+                return;
         }
         vector<int> move = add_cord(curr_idx, d_check[flag_dir]);
         if ((move[0] < 0 || move[0] > 9) && 
             (move[1] < 0 || move[1] > 9))
-                return false;
+                return;
     }
 }
 
@@ -103,7 +113,7 @@ vector<int> add_cord(const vector<int>& cord, const vector<int>& dir)
 
 
 // returns direction of the match
-vector<int> direction (const vector<int>& cord1, const vector<int>& cord2) 
-{
-    return {abs(cord2[0] - cord1[0]), abs(cord2[1] - cord1[1])};
-}
+// vector<int> direction (const vector<int>& cord1, const vector<int>& cord2) 
+// {
+//     return {abs(cord2[0] - cord1[0]), abs(cord2[1] - cord1[1])};
+// }
