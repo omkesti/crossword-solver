@@ -35,7 +35,11 @@ vector<vector<int>> found_indices;
 bool is_match = false;
 
 /* Function declerations */
-void check_match(const vector<int>& c_idx);
+void check_match(
+    const vector<int>& c_idx,
+    const int f_idx
+);
+
 void full_word_check(
     const int flag_dir, 
     const int flag_word, 
@@ -59,7 +63,7 @@ int main() {
             {
                 if (words[f_idx][0] == grid[i][j])
                 {
-                    check_match({i,j});
+                    check_match({i,j}, f_idx);
                 }
             }
         }
@@ -69,14 +73,18 @@ int main() {
 }
 
 // Checks for the first letter match
-void check_match(const vector<int>& c_idx)
+void check_match(const vector<int>& c_idx, const int f_idx)
 {
     unsigned int flag_dir = 10;
     unsigned int flag_word = 10;
+    const string word = words[f_idx];
 
-    for (int f_idx = 0; f_idx < words.size(); f_idx++)
+    /* The loop: The word which has matched first letter, 
+    we check all around the letter to find if 2nd letter follows */
+
+    for (int d_idx = 0; d_idx < d_check.size(); d_idx++)
     {
-        for (int d_idx = 0; d_idx < d_check.size(); f_idx++, d_idx++)
+        for (int f_idx = 0; f_idx < words.size(); f_idx++)
         {
             vector<int> added_cord = add_cord(c_idx, d_check[d_idx]);
             if ((added_cord[0] < 0 || added_cord[0] > 9) && 
