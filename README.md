@@ -34,3 +34,10 @@ g++ -std=c++17 -O2 -Wall -Wextra -pedantic .\index.cpp -o .\crossword.exe
 
 - The current program does not print results yet; it only stores matches internally.
 - The test file is a placeholder and not wired to the main logic.
+
+## Current Complexity of the Code (will be improved)
+
+n: columns and rows in the grid.
+m: number of words to search.
+
+main(): O(n^2 \* m)

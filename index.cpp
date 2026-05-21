@@ -6,6 +6,7 @@
 
 using namespace std;
 
+/* Hardcoded grid */
 char grid[10][10] = {
   {'A', 'C', 'E', 'D', 'V', 'L', 'X', 'O', 'I', 'L'},
   {'A', 'Z', 'A', 'G', 'G', 'O', 'O', 'S', 'F', 'T'},
@@ -18,33 +19,48 @@ char grid[10][10] = {
   {'S', 'I', 'D', 'X', 'D', 'S', 'P', 'H', 'H', 'O'},
   {'B', 'P', 'A', 'P', 'O', 'O', 'L', 'M', 'T', 'M'}
 };
+
+/* Hardcoded words to search */
 vector<string> words = {"STACK", "ARRAY", "LOOP", "CLASS", "POINTER"};
+
+/* Unit vectors that represent direction */
 vector<vector<int>> d_check = {
         {0,-1}, {1,-1}, {1,0}, {1,1}, {0,1}, {-1,1}, {-1,0}, {-1,-1}
 };
 
+/* Location of the starting word will be inserted here */
 vector<vector<int>> found_indices;
 
+/* Check weather match is found */
 bool is_match = false;
 
+/* Function declerations */
 void check_match(const vector<int>& c_idx);
 void full_word_check(
     const int flag_dir, 
     const int flag_word, 
     const vector<int> c_idx
 );
-vector<int> add_cord(const vector<int>& cord, const vector<int>& dir);
+vector<int> add_cord(
+    const vector<int>& cord, 
+    const vector<int>& dir
+);
 
+/* main */
 int main() {
-    int f_idx = 0;
+
+    /* Dynamic grid will be added in future */
 
     for (int i = 0; i < 10; i++)
     {
         for (int j = 0; j < 10; j++)
         {
-            if (words[f_idx][0] == grid[i][j])
+            for (int f_idx = 0; f_idx < size(words); f_idx++)
             {
-                check_match({i,j});
+                if (words[f_idx][0] == grid[i][j])
+                {
+                    check_match({i,j});
+                }
             }
         }
     }
