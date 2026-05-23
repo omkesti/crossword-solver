@@ -6,6 +6,25 @@
 
 using namespace std;
 
+
+/* Variables used
+
+## Permanent
+grid: static 2D array which consists of the grid from which the words are to be found from.
+words: vector to store the words that are to be searched.
+f_idx: index of words that are to be searched in the grid.
+c_idx: current index in the grid which is being processed.
+vec: stores all the directions where the words are checked.
+found_indices: stores all the indexes from the grid where the words are found.
+is_match: boolean value storing weather the word is found or not.
+
+## Temporary variables
+flag_dir: stores the index of the direction where the 2nd character was matched.
+flag_word: stores the index of the word to which match was found.
+word: stores the word from words on which logic is to be performed.
+
+/*
+
 /* Hardcoded grid */
 char grid[10][10] = {
   {'A', 'C', 'E', 'D', 'V', 'L', 'X', 'O', 'I', 'L'},
@@ -24,7 +43,7 @@ char grid[10][10] = {
 vector<string> words = {"STACK", "ARRAY", "LOOP", "CLASS", "POINTER"};
 
 /* Unit vectors that represent direction */
-vector<vector<int>> d_check = {
+vector<vector<int>> vec = {
         {0,-1}, {1,-1}, {1,0}, {1,1}, {0,1}, {-1,1}, {-1,0}, {-1,-1}
 };
 
@@ -69,6 +88,12 @@ int main() {
         }
     }
 
+    cout << "----The words were found at following indices below----";
+    for (int i = 0; i < found_indices.size(); i++)
+    {
+        cout << words[found_indices[i][2]] << ": [" << found_indices[i][0] << "," << found_indices[i][1] << endl;
+    }
+
     return 0;
 }
 
@@ -82,15 +107,19 @@ void check_match(const vector<int>& c_idx, const int f_idx)
     /* The loop: The word which has matched first letter, 
     we check all around the letter to find if 2nd letter follows */
 
-    for (int d_idx = 0; d_idx < d_check.size(); d_idx++)
+    for (int d_idx = 0; d_idx < vec.size(); d_idx++)
     {
         for (int f_idx = 0; f_idx < words.size(); f_idx++)
         {
-            vector<int> added_cord = add_cord(c_idx, d_check[d_idx]);
+            // stores the coordinate that is to be checked.
+            vector<int> added_cord = add_cord(c_idx, vec[d_idx]);
+
+            // this checks weather coordinates are not overflowing out of the grid.
             if ((added_cord[0] < 0 || added_cord[0] > 9) && 
                 (added_cord[1] < 0 || added_cord[1] > 9))
                 continue;
             
+            // 
             if (grid[added_cord[0]][added_cord[1]] == words[f_idx][0])
             {
                 flag_dir = d_idx;
@@ -119,10 +148,11 @@ void full_word_check(
         {
             count++;
             if (count == word.size())
-                found_indices.push_back(c_idx);
+                
+                found_indices.push_back({c_idx[0], c_idx[1], flag_word});
                 return;
         }
-        vector<int> move = add_cord(curr_idx, d_check[flag_dir]);
+        vector<int> move = add_cord(curr_idx, vec[flag_dir]);
         if ((move[0] < 0 || move[0] > 9) && 
             (move[1] < 0 || move[1] > 9))
                 return;
